@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  .mdc-body
+    .mdc-row
+      .mdc-column
+        h1.mdc-h1 Migration Validation
+        //device discovery form
+        form.mdc-menu__items.mdc-list(method='POST', action='/discovery')
+          div.mdc-menu__items.mdc-list
+          .mdc-form-field
+            label.mdc-list-item(for='device') Device Name:
+            input.mdc-list-item.mdc-form-field(name="device", id='device',type='text', placeholder='hostname or IP' device='mgmt.domain.com')
+          div.mdc-menu__items.mdc-list
+          .mdc-form-field 
+            label.mdc-list-item(for='action') Action:
+            select(name='action')
+              - var actionsList = ['discover','check','diff'];
+                each action in actionsList
+                  option.mdc-form-field(id='action' ) #{action}
+          div.mdc-menu__items.mdc-list 
+          button(type='submit').mdc-button--icon go
