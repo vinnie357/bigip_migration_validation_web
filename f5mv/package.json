@@ -6,13 +6,18 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "ajv": "^6.5.2",
+    "ajv-keywords": "^3.2.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "material-components-web": "^0.38.0",
+    "mongodb": "^3.1.1",
+    "mongoose": "^5.2.6",
     "morgan": "~1.9.0",
-    "pug": "^2.0.3"
+    "pug": "^2.0.3",
+    "request": "^2.87.0"
   }
 }

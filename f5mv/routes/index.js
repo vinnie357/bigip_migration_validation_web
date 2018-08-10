@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var request = require('request');
+const db = require('./models/database.js')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
