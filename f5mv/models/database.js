@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 // CRUD
-module.exports.createRecord = () => {
-    console.log('createRecord');
+module.exports.createRecord = (device) => {
+    console.log('createRecord '+ device);
     return 'record created'
 }
 module.exports.readRecord = () => {

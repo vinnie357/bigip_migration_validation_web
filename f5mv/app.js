@@ -39,3 +39,6 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+var listener = app.listen(3000, function(){
+  console.log('f5mv server listening on port ' + listener.address().port); //Listening on port 3000
+});

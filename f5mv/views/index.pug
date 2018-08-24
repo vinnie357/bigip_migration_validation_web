@@ -18,5 +18,7 @@ block content
               - var actionsList = ['discover','check','diff'];
                 each action in actionsList
                   option.mdc-form-field(id='action' ) #{action}
-          div.mdc-menu__items.mdc-list 
+          div.mdc-menu__items.mdc-list
+          each name in list
+            li #{name}
           button(type='submit').mdc-button--icon go
