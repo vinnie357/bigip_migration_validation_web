@@ -4,7 +4,7 @@ block content
   .mdc-body
     .mdc-row
       .mdc-column
-        h1.mdc-h1 Migration Validation
+        h1.mdc-h1 F5 Migration Validation
         //device discovery form
         form.mdc-menu__items.mdc-list(method='POST', action='/discovery')
           div.mdc-menu__items.mdc-list
@@ -19,6 +19,8 @@ block content
                 each action in actionsList
                   option.mdc-form-field(id='action' ) #{action}
           div.mdc-menu__items.mdc-list
-          each name in list
-            li #{name}
+          h2 -Known Hosts-
+          each name in devices
+            a #{name}
+          br
           button(type='submit').mdc-button--icon go

@@ -6,7 +6,9 @@ const db = require('../models/database')
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var list = db.readRecord();
-  res.render('index', { title: 'F5MigrationValidation', list: list });
+  var devices = db.readRecord();
+  console.log("deviceList:" + devices);
+  res.render('index', { title: 'F5MigrationValidation', list: list, devices: devices });
 });
 
 /* POST discovery. */
@@ -16,7 +18,8 @@ router.post('/discovery', function(req, res) {
     var device = req.body.device
     db.createRecord(device);
     var list = db.readRecord();
-    res.render('index', { error: { status: '200' }, title: 'F5MigrationValidation', action: action, device: device, list: list });
+    var devices = db.readRecord();
+    res.render('index', { error: { status: '200' }, title: 'F5MigrationValidation', action: action, device: device, list: list, devices: devices });
   });
 module.exports = router;
 
