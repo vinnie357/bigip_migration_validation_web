@@ -22,22 +22,19 @@ module.exports.createRecord = (device) => {
 }
 module.exports.readRecord = () => {
     console.log('readRecord');
-    var devices = collection.find({}).toArray(function(err, docs) {
+    collection.find({}).toArray(function(err, Devicelist) {
         assert.equal(err, null);
-        //console.log("Found the following records");
-        //console.log(docs);
+        console.log("Found the following records");
+        console.log(Devicelist);
         var list = []
-        docs.forEach(function(doc) {
-            list.push(doc.devicename)
-            //console.log("adding:" + doc)            
+        Devicelist.forEach(function(doc) {
+            list.push(Devicelist.devicename)
+            console.log("adding:" + doc.devicename)            
             //console.log("Devicelist:" + list)    
         });
-        console.log("functionlist:" + list)
-        return list
       });
-      console.log(devices)
-      var temp = "host.domain.com"
-      return temp
+      console.log("devicelist:", Devicelist)
+      return Devicelist
 }
 module.exports.updateRecord = () => {
     console.log('updateRecord');

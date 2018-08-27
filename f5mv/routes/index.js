@@ -5,10 +5,12 @@ const db = require('../models/database')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var list = db.readRecord();
   var devices = db.readRecord();
-  console.log("deviceList:" + devices);
-  res.render('index', { title: 'F5MigrationValidation', list: list, devices: devices });
+  console.log("devices:", devices)
+  var device = devices.forEach(function(device){
+  console.log("device: ", device);
+});
+  res.render('index', { title: 'F5MigrationValidation', devices: devices });
 });
 
 /* POST discovery. */
