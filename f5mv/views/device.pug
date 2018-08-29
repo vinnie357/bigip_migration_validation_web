@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  .mdc-body
+    .mdc-row
+      .mdc-column
+        h1.mdc-h1 #{title.name}
+        button(onclick="window.location.href='/'") Return to Menu
+        //a(href="/") Return to Menu
+        //device info page
+        table
+          li url: /device#{devices.url}
+          li id: #{devices.id}
+          button(type='submit').mdc-button--icon refresh
+          

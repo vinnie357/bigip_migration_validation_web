@@ -17,18 +17,37 @@ router.get('/', function(req, res, next) {
         res.render('index', { title: 'F5MigrationValidation', devices: devices });
     });
 });
+/* GET device. */
+router.get('/device/*', function(req, res, next) {
+    // get all the devices
+    var deviceurl = req.originalUrl
+    //console.log(deviceurl)
+    var splitdevice = deviceurl.split("/")
+    //console.log(splitdevice)
+    var idString = splitdevice[2]
+    console.log(idString)
+    //Device.findOne({_id: new ObjectID(idString)}, console.log)  // ok
+    //Device.findOne({id: idString}, console.log)  // wrong! callback gets undefined
+    Device.findOne({id: idString}, function(err, devices) {
+        if (err) throw err;
+        // object of all the users
+        console.log("devices:", devices)
+        res.render('device', { title: devices, devices: devices });
+    });
+});
 /* POST discovery. */
 router.post('/discovery', function(req, res) {
     console.log(req.body);
     var action = req.body.action
     var device = req.body.device
-    var uid = ObjectID()
+    var uid = ( new ObjectID())
     // create a new device
     var newDevice = Device({
         name: device,
         username: 'admin',
         password: 'admin',
-        url:('/'+ uid)
+        url:('/'+ uid),
+        id: uid
         });
     
         // save the user
