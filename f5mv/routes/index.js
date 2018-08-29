@@ -5,6 +5,7 @@ const db = require('../models/database')
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var Device = require('../models/device');
+var ObjectID = require('mongodb').ObjectID;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -21,12 +22,13 @@ router.post('/discovery', function(req, res) {
     console.log(req.body);
     var action = req.body.action
     var device = req.body.device
+    var uid = ObjectID()
     // create a new device
     var newDevice = Device({
         name: device,
         username: 'admin',
         password: 'admin',
-        url:'/1'
+        url:('/'+ uid)
         });
     
         // save the user

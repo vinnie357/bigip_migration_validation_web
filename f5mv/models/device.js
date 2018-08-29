@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 // create a schema
 var deviceSchema = new Schema({
   name: String,
-  username: { type: String, required: true, unique: true },
+  username: { type: String, required: true },
   password: { type: String, required: true },
   url: String,
   admin: Boolean,

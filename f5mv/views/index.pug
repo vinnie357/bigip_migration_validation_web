@@ -23,7 +23,7 @@ block content
           table
           each device in devices
             li 
-                input(type='checkbox',id="_"+device.name)
-                a(href="/link"+ device.url) #{device.name}
+                input(type='checkbox',id="_"+device.name,name=device.name)
+                a(href="/device"+ device.url) #{device.name}
           br
           button(type='submit').mdc-button--icon go
