@@ -6,6 +6,9 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var Device = require('../models/device');
 var ObjectID = require('mongodb').ObjectID;
+const Resolve = require('../models/dns').Resolve;
+// temp
+const dns = require('dns');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -25,38 +28,86 @@ router.get('/device/*', function(req, res, next) {
     var splitdevice = deviceurl.split("/")
     //console.log(splitdevice)
     var idString = splitdevice[2]
-    console.log(idString)
+    //console.log(idString)
     //Device.findOne({_id: new ObjectID(idString)}, console.log)  // ok
     //Device.findOne({id: idString}, console.log)  // wrong! callback gets undefined
     Device.findOne({id: idString}, function(err, devices) {
         if (err) throw err;
         // object of all the users
-        console.log("devices:", devices)
+        //console.log("devices:", devices)
         res.render('device', { title: devices, devices: devices });
     });
 });
 /* POST discovery. */
 router.post('/discovery', function(req, res) {
-    console.log(req.body);
+    //console.log(req.body);
     var action = req.body.action
     var device = req.body.device
-    var uid = ( new ObjectID())
-    // create a new device
-    var newDevice = Device({
-        name: device,
-        username: 'admin',
-        password: 'admin',
-        url:('/'+ uid),
-        id: uid
-        });
-    
-        // save the user
-        newDevice.save(function(err) {
-        if (err) throw err;
-    
-        console.log('Device created!');
-        });
+    var deletebtn = req.body.delete
+    //var device = req.body.host.domain.com
+    if(device != ''){
+        if(action == "discover"){
+            var uid = ( new ObjectID())
+            // create a new device
+            //console.log("input type:", typeof device)
+            //console.log(typeof device)
+            // dns lookups
+            var dnsinfo = new Resolve(device);
+            var ip = {};
+            dnsLookup();
+            function saveDevice() {
+                // new device from schema
+                var newDevice = Device({
+                    name: device,
+                    username: 'admin',
+                    password: 'admin',
+                    url:('/'+ uid),
+                    id: uid,
+                    hostname: host,
+                    address: ip
+                    });
+                
+                    // save the device
+                    newDevice.save(function(err) {
+                    if (err) throw err;
+                
+                    //console.log('Device created!');
+                    });
+                }
+            function dnsLookup (){
+            dnsinfo.resolvedns(function(response){
+                //console.log(response);
+                //console.log("dnsinfo:", JSON.stringify(response))
+                ip = response.ip
+                host = response.host
+                saveDevice()
+            });
+        };
+
+        };
     //res.render('index', { error: { status: '200' }, title: 'F5MigrationValidation', action: action, devices: devices });
+    };
+    if(deletebtn != null){
+        var device = req.body.delete
+        //console.log("find and delete",device)
+        Device.deleteOne({name: device }, function(err, devices) {
+            if (err) throw err;
+            // object deleted
+            //console.log("deleted", device)
+        })
+    };
+    if(action == "check"){
+        var devices = [req.body.checkbox]
+        console.log("devices:", devices)
+        console.log("devices number:", devices.length)
+
+    }
+    if(action == "diff"){
+        var devices = [req.body.checkbox]
+        console.log("devices:", devices)
+        console.log("devices number:", devices.length)
+        
+    }
     res.redirect('/');
   });
 module.exports = router;

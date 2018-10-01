@@ -1,0 +1,119 @@
+// retrive a token for bigip management
+//
+// example expired token
+// error: null
+// statusCode: 401
+// { code: 401,
+//   message: 'X-F5-Auth-Token has expired.',
+//   referer: '192.168.2.76',
+//   restOperationId: 12331306,
+//   errorStack:
+
+
+// modules
+var request = require('request');
+var Secrets = require("../models/secrets");
+var async = require("async");
+// variables
+
+protocol = 'https:';
+host = "bigipve.vinlab.com";
+tokenuri = '/mgmt/shared/authn/login';
+uri = '/mgmt/tm/ltm';
+username = Secrets.bigip_user;
+password = Secrets.bigip_pass;
+auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
+url = protocol + '//' + host + uri;
+tokenurl = protocol + '//' + host + tokenuri;
+
+
+// basic auth
+function basicAuth () {
+// set options
+var basicoptions = {
+    protocol: protocol,
+    host: host,
+    uri: url,   
+    sendImmediately: true,
+    rejectUnauthorized: false,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': auth 
+    }
+};
+
+// Basic Auth request
+console.log(basicoptions.uri);
+request(basicoptions, function (error, response, body) {
+  console.log('error:', error); // Print the error if one occurred
+  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+  console.log('body:', body); // Print the HTML for the Google homepage.
+});
+};
+
+
+// token auth
+function tokenAuth () {
+// Token auth request:
+var post_data_standard = querystring.stringify({
+        "username":username,
+        "password":password,
+        "loginProviderName":"tmos"
+});
+var post_data_json = JSON.stringify({
+    "username":username,
+    "password":password,
+    "loginProviderName":"tmos"
+});
+
+var tokenoptions = {
+    protocol: protocol,
+    host: host,
+    uri: tokenurl,   
+    method: 'POST',
+    sendImmediately: true,
+    rejectUnauthorized: false,
+    headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(post_data_json),
+        'Authorization': auth 
+    },
+    json: post_data_json,
+};
+console.log(tokenoptions.uri);
+var token_post = request(tokenoptions, function (error, response, body) {
+    response.setEncoding('utf8');
+    response.on('data', function (chunk) {
+        console.log('Response: ' + chunk);
+    });
+  console.log('error:', error); // Print the error if one occurred
+  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+  console.log('body:', body); // Print the HTML for the Google homepage.
+  console.log("token:", response.body.token.token);
+  return response.body.token.token
+});
+
+// post the data
+//console.log(post_data_json)
+//console.log(tokenoptions.json)
+token_post.write(post_data_json);
+//token_post.end();
+
+// write token to db for device:
+// mongoclient save to devices.device.auth.token,auth.user
+
+}
+
+const startBasic = async function() {
+  const result = await basicAuth();
+  console.log("Basic result:", JSON.stringify(result))
+}
+const startToken = async function() {
+  const result = await tokenAuth();
+  console.log("Token result:", JSON.stringify(result))
+}
+
+startToken()
+startBasic()
+
+console.log("done")

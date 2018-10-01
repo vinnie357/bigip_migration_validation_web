@@ -6,18 +6,24 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "ajv": "^6.5.2",
+    "ajv": "^6.5.3",
     "ajv-keywords": "^3.2.0",
+    "async": "^2.6.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
+    "icontrol": "^0.1.5",
+    "is-ip": "^2.0.0",
     "jade": "~1.11.0",
-    "material-components-web": "^0.38.0",
+    "json-query": "^2.2.2",
+    "material-components-web": "^0.38.2",
     "mongodb": "^3.1.4",
-    "mongoose": "^5.2.10",
+    "mongoose": "^5.2.12",
     "morgan": "~1.9.0",
+    "passport-oauth2": "^1.4.0",
     "pug": "^2.0.3",
-    "request": "^2.87.0"
+    "q": "^1.5.1",
+    "request": "^2.88.0"
   }
 }

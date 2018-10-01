@@ -14,16 +14,23 @@ block content
           div.mdc-menu__items.mdc-list
           .mdc-form-field 
             label.mdc-list-item(for='action') Action:
-            select(name='action')
-              - var actionsList = ['discover','check','diff'];
+            select(name='action',,placeholder="select one")
+              - var actionsList = ['','discover','check','diff'];
                 each action in actionsList
-                  option.mdc-form-field(id='action' ) #{action}
+                  if action != ""
+                    option.mdc-form-field(id='action' ) #{action}
+                  if action == "" 
+                    option(value="", disabled, selected) Select One
           div.mdc-menu__items.mdc-list
           h2 -Known Hosts-
           table
           each device in devices
             li 
-                input(type='checkbox',id="_"+device.name,name=device.name)
-                a(href="/device"+ device.url) #{device.name}
+                input(type='checkbox',id="_"+device.name,name="checkbox", value=device.name)
+                label(for='_' + device.name) #{device.name}
+                br
+                a(href="/device"+ device.url) details
+                button(type='submit',name="delete",value=device.name).mdc-button--icon delete
           br
           button(type='submit').mdc-button--icon go
+          //button(type='submit',name="'delete' + #{device.name}",value="delete").mdc-button--icon delete

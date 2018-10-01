@@ -12,7 +12,9 @@ var deviceSchema = new Schema({
   admin: Boolean,
   location: String,
   created_at: Date,
-  updated_at: Date
+  updated_at: Date,
+  address: String,
+  hostname: String
 });
 
 // the schema is useless so far

@@ -11,5 +11,7 @@ block content
         table
           li url: /device#{devices.url}
           li id: #{devices.id}
-          button(type='submit').mdc-button--icon refresh
+          li hostname: #{devices.hostname}
+          li address: #{devices.address}
+          button(type='submit',onClick="window.location.reload()").mdc-button--icon refresh
           
