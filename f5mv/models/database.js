@@ -15,7 +15,7 @@ catch (err) {
 // CRUD
 module.exports.createRecord = (device) => {
     console.log('createRecord')
-    // create a new user
+    // create a new device
     var newDevice = Device({
     name: device,
     username: 'admin',

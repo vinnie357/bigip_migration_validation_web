@@ -54,7 +54,6 @@ router.post('/discovery', function(req, res) {
             // dns lookups
             var dnsinfo = new Resolve(device);
             var ip = {};
-            dnsLookup();
             function saveDevice() {
                 // new device from schema
                 var newDevice = Device({
@@ -64,6 +63,7 @@ router.post('/discovery', function(req, res) {
                     url:('/'+ uid),
                     id: uid,
                     hostname: host,
+                    created: Date.now(),
                     address: ip
                     });
                 
@@ -71,18 +71,18 @@ router.post('/discovery', function(req, res) {
                     newDevice.save(function(err) {
                     if (err) throw err;
                 
-                    //console.log('Device created!');
+                    console.log('Device created!');
                     });
                 }
-            function dnsLookup (){
             dnsinfo.resolvedns(function(response){
-                //console.log(response);
+                console.log(JSON.stringify(response));
+                if (response.ip && response.host) {
+                    ip = response.ip
+                    host = response.host
+                    saveDevice()
+                }
                 //console.log("dnsinfo:", JSON.stringify(response))
-                ip = response.ip
-                host = response.host
-                saveDevice()
             });
-        };
 
         };
     //res.render('index', { error: { status: '200' }, title: 'F5MigrationValidation', action: action, devices: devices });
@@ -93,19 +93,34 @@ router.post('/discovery', function(req, res) {
         Device.deleteOne({name: device }, function(err, devices) {
             if (err) throw err;
             // object deleted
-            //console.log("deleted", device)
+            console.log("deleted", device)
         })
     };
     if(action == "check"){
         var devices = [req.body.checkbox]
-        console.log("devices:", devices)
-        console.log("devices number:", devices.length)
+        console.log("check:", JSON.stringify(devices))
+        devices.forEach(item => {
+        })
 
     }
     if(action == "diff"){
         var devices = [req.body.checkbox]
-        console.log("devices:", devices)
-        console.log("devices number:", devices.length)
+        var number = 0;
+        console.log("diff:", JSON.stringify(devices))
+        devices.forEach(item => {
+           //console.log(item)
+           if(typeof(item) == "object") {
+                item.forEach(n => {
+                number ++
+                })
+            }      
+        })
+        console.log("devices number:", number)
+        if(number == 2) {
+            console.log("diff two")
+        } else {
+            console.log("please select two devices")
+        }
         
     }
     res.redirect('/');
