@@ -1,0 +1,27 @@
+version: "2"
+services:
+
+  mongo:
+    image: mongo
+    build: ./mongodb
+    restart: always
+    ports:
+    - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_APP_ROOT_USERNAME: demoapp
+      MONGO_INITDB_APP_ROOT_PASSWORD: example
+  
+  f5mv:
+    build: ./f5mv
+    ports:
+    - "3000:3000"
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      WAIT_HOSTS: mongo:27017

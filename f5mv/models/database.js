@@ -3,7 +3,7 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var Device = require('../models/device');
 try {
-mongoose.connect('mongodb://localhost:27017/f5mv',{ useNewUrlParser: true }, function(err, client) {
+mongoose.connect('mongodb://mongo:27017/f5mv',{ useNewUrlParser: true }, function(err, client) {
     assert.equal(null, err);    
     console.log("Connected to database")
 })
